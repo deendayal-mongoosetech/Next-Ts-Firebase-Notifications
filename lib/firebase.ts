@@ -18,12 +18,12 @@ export const messaging =
 export const requestForToken = async () => {
   if (!messaging) return null;
   try {
-    console.log(messaging, "messaging");
+    // console.log(messaging, "messaging");
     const currentToken = await getToken(messaging, {
       vapidKey:
         "BIrDEiHjbcg3XjzIqQJIjiensRd3OVIyh7Teg5HQmbxeQx6RxKDTjW0PbOV-iY87fW0A3gPP36vluMWdGJcVgxA",
     });
-    console.log(currentToken, "current token");
+    // console.log(currentToken, "current token");
 
     return currentToken;
   } catch (error) {

@@ -7,6 +7,22 @@ export default function Home() {
   const [token, setToken] = useState<string | null>(null);
 
   const enableNotifications = async () => {
+    const permission = Notification.permission;
+    if (permission === "granted") {
+      const fcmToken = await requestForToken();
+      if (fcmToken) {
+        setToken(fcmToken);
+        await saveFcmToken(fcmToken);
+      }
+      return;
+    }
+
+    if (permission === "denied") {
+      handleDeniedPermission();
+      return;
+    }
+
+    // permission === "default" → Ask the user
     const result = await Notification.requestPermission();
 
     if (result === "granted") {
@@ -15,6 +31,25 @@ export default function Home() {
         setToken(fcmToken);
         await saveFcmToken(fcmToken);
       }
+    } else {
+      handleDeniedPermission();
+    }
+  };
+
+  const handleDeniedPermission = () => {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isAndroid = /Android/.test(navigator.userAgent);
+
+    if (isIOS) {
+      alert(
+        "Notifications are blocked.\n\nTo enable:\nSettings → Safari → Notifications → Allow"
+      );
+    } else if (isAndroid) {
+      alert(
+        "Notifications are blocked.\n\nTo enable:\nChrome → Settings → Site Settings → Notifications → Allow"
+      );
+    } else {
+      alert("Please enable notifications in your browser settings.");
     }
   };
 

@@ -7,7 +7,7 @@ export const saveFcmToken = async (token: string) => {
     });
 
     const data = await res.json();
-    console.log("Token saved:", data);
+    // console.log("Token saved:", data);
     return data;
   } catch (error) {
     console.error("Error saving token:", error);
